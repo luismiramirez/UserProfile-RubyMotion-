@@ -2,10 +2,9 @@ class AppDelegate
   def application(application, didFinishLaunchingWithOptions:launchOptions)
     @window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
 
-    @user = User.new
-    @user.id = "123"
-    @user.name = "Luismi"
-    @user.email = "luismi@mail.com"
+    @user = User.new(id: "123", name: "Luismi",
+                     email: "luismi@mail.com", phone: "333-555-333")
+
     @user_controller = UserController.alloc.initWithUser(@user)
     @nav_controller =
         UINavigationController.alloc.initWithRootViewController(@user_controller)
