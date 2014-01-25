@@ -10,17 +10,23 @@ class UserController < UIViewController
   def viewDidLoad
     super
 
+    #Fix for iOS7, source: http://kickcode.com/blog/2013/10/09/rubymotion-and-ios-7.html
+    #Needed because without this the elements go under the navigation bar
+    if UIDevice.currentDevice.systemVersion.floatValue >= 7.0
+      self.edgesForExtendedLayout = UIRectEdgeNone
+    end
+
     self.view.backgroundColor = UIColor.whiteColor
 
     last_label = nil
     ["id", "name", "email"].each do |prop|
       label = UILabel.alloc.initWithFrame(CGRectZero)
-      label.text = "#{prop.capitalize}"
+      label.text = "#{prop.capitalize}:"
 
       label.sizeToFit
       if last_label
         label.frame = [
-            [last_label.frame.origin.y,
+            [last_label.frame.origin.x,
              last_label.frame.origin.y + last_label.frame.size.height],
             label.frame.size]
       else
