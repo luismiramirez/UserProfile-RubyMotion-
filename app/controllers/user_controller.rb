@@ -1,4 +1,5 @@
 class UserController < UIViewController
+  include BubbleWrap::KVO
   attr_accessor :user
 
   def initWithUser(user)
@@ -38,6 +39,10 @@ class UserController < UIViewController
 
       value = UILabel.alloc.initWithFrame(CGRectZero)
       value.text = self.user.send(prop)
+      observe(self.user, prop) do |old_value, new_value|
+        value.text = new_value
+        value.sizeToFit
+      end
       value.sizeToFit
       value.frame = [
           [label.frame.origin.x + label.frame.size.width + 10, label.frame.origin.y],
@@ -45,5 +50,10 @@ class UserController < UIViewController
       self.view.addSubview(value)
     end
     self.title = self.user.name
+  end
+
+  def viewDidUnload
+    unobserve_all
+    super
   end
 end

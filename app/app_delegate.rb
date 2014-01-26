@@ -2,8 +2,9 @@ class AppDelegate
   def application(application, didFinishLaunchingWithOptions:launchOptions)
     @window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
 
-    @user = User.new(id: "123", name: "Luismi",
-                     email: "luismi@mail.com", phone: "333-555-333")
+    @user = User.load
+    @user ||= User.new(id: "123", name: "Luismi",
+                       email: "luismi@mail.com", phone: "333-555-333")
 
     @user_controller = UserController.alloc.initWithUser(@user)
     @nav_controller =
@@ -11,5 +12,9 @@ class AppDelegate
     @window.rootViewController = @nav_controller
     @window.makeKeyAndVisible
     true
+  end
+
+  def applicationDidEnterBackground(application)
+    @user.save
   end
 end
